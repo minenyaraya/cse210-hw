@@ -1,0 +1,4 @@
+goalName|shortName|description|points|bonus
+simpleGoal| caminar | caminar 30 minutos diarios |100|10
+EternalGoal|templo | ir al templo una vez al mes|300
+checkList| nombre corto|description|Puntos||bonos|cuantas veces
