@@ -1,72 +1,26 @@
-using System.Transactions;
+using System;
+using System.Collections.Generic;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-         {
-            //Word word= new Word("truth");
-            //Console.WriteLine(word.GetDisplayText());
-     
-            Console.WriteLine("Enter The scripture Book)");
-            string book = Console.ReadLine();
+        Console.WriteLine("\nPlease enter to delete some word to memorize or type 'quit' to exit.");
+        Scripture scripture = new Scripture("Ruth ", 1, 16, " And Ruth said, Entreat me not to leave thee, or to return from following after thee: for whither thou goest, I will go; and where thou lodgest, I will lodge: thy people shall be my people, and thy God my God");
+        scripture.Display(); 
+            
+        while (true)
+        {
+            string input = Console.ReadLine();
+            if (input.ToLower() == "quit")
+                break;
 
-            Console.WriteLine("Enter The scripture Chapter");
-            int chapter = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter The scripture Verse");
-            int verse = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter The scripture end verse");
-            // int endVerse = int.Parse(Console.ReadLine());
-
-            Console.WriteLine(" Enter the scripture text: ");
-            string text = Console.ReadLine();
-
-            List<Word> words= text.Split(" ").Select(x => new Word(x)).ToList();
-
-            Reference reference= new Reference(book, chapter,verse);
-            Scripture scripture = new Scripture(reference, words);
-
-            do
+            if (!scripture.HideRandomWord())
             {
-              
-               scripture.Display();
-               Console.WriteLine("Enter to hide a word to memorize, or quit");
-
-               string userInput = Console.ReadLine();
-
-               int wordsToHide = scripture.CountWords();
-               if (wordsToHide > 0)
-               {
-                   scripture.HideWords(2);
-               }
-               else
-               {
-               scripture.HideWords(1);
-               }
-               if (userInput.ToLower() == "quit")
-               {
-               break;
+            Console.WriteLine("\nYou win!!");
+                break;
             }
-            
-            }
-
-            
-            while (!scripture.IsCompletelyHidden());
-            {
-            Console.WriteLine ($"{scripture}");
-            }
-
-            Console.Clear();
-            scripture.Display();
-            Console.WriteLine("");
-
-            Console.WriteLine("good");
-
-
-
-            
-        }    
+            scripture.Display();      
+        }
     }
 }

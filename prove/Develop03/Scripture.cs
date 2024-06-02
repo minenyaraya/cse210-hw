@@ -1,80 +1,69 @@
-using System.Diagnostics;
+using System.Collections.Concurrent;
 
-public class Scripture
-{
-    private Reference reference;
-    private List<Word> words;
+class Scripture
+    {
+        private Reference _reference;
+        private List<Word> _words;
+  
 
-    public Scripture(Reference reference, List<Word> words)
-    {
-        this.reference = reference;
-        this.words = words;
-    }
-    public Reference Reference
-    {
-        get{
-        return reference;
-        }
-    }    
-     public bool IsCompletelyHidden()
-     {
-        foreach (Word word in words)
+        public Scripture(string book, int chapter, int verse, string text)
         {
-            if (!word.IsHidden)
+            _reference = new Reference(book, chapter, verse);
+            _words = new List<Word>();
+
+            string[] splitText = text.Split(' ');
+            foreach (string word in splitText)
             {
-                return false;
+                _words.Add(new Word(word));
             }
         }
-        return true;
-     }
-     public void HideWords(int count)
-     {
-        Random random=new Random();
-        for (int i=0; i < count; i = + +1)
+
+        public void Display()
         {
-            int index = random.Next(0, words.Count);
-            while (words[index].IsHidden == true)
+            Console.WriteLine($"{_reference}:");
+            foreach (Word word in _words)
             {
-                index = random.Next(0, words.Count);
-            }
-            words[index].IsHidden = true;
-        }
-     }
-     public int CountWords()
-     {
-        int allWords = 0;
-        foreach (Word words in words)
-        {
-            if (words.IsHidden)
-            {
-                allWords += 0;
-            }
-            else
-            {
-                allWords += 1;
-            }
-        }
-        return allWords;
-     }
-     public void Display()
-     {
-        Console.WriteLine(reference);
-        foreach (Word word in words)
-        {
-            string wordText = word.Text;
-            if (word.IsHidden)
-            {
-                for (int i=0; i < wordText.Length; i++)
+                if (word.IsHidden())
                 {
-                    Console.Write("_");
+                    Console.Write(new string('_', word.GetText().Length) + " ");
                 }
-                Console.Write(" ");
-            }
-            else
-            {
-                Console.Write(word.Text + " ");
+                else
+                {
+                    Console.Write(word.GetText() + " ");
+                }
             }
         }
-        Console.WriteLine();
-     }
-}
+
+        public bool HideRandomWord()
+        {
+            List<Word> visibleWords = GetVisibleWords();
+            if (visibleWords.Count < 2)
+                return false;
+
+            Random random = new Random();
+            int randomIndex1 = random.Next(visibleWords.Count);
+            int randomIndex2;
+
+            do
+            {
+                randomIndex2 = random.Next(visibleWords.Count);
+            }
+            
+            while (randomIndex1== randomIndex2);
+
+            visibleWords[randomIndex1].Hide();
+            visibleWords[randomIndex2].Hide();
+            return true;
+        }
+
+        private List<Word> GetVisibleWords()
+        {
+            List<Word> visibleWords = new List<Word>();
+            foreach (Word word in _words)
+            {
+                if (!word.IsHidden())
+                    visibleWords.Add(word);
+            }
+            return visibleWords;
+        }
+    }

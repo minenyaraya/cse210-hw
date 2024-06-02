@@ -1,26 +1,26 @@
-using System.Runtime.CompilerServices;
-
-public class Word
-{
-
-    private string text;
-
-    private bool isHidden;
-
-    public Word(string text)
+ public class Word
     {
-        this.text = text;
-        this.isHidden = false;
+        private string _text;
+        private bool _isHidden;
+
+        public Word(string text)
+        {
+            this._text = text;
+            _isHidden = false;
+        }
+
+        public void Hide()
+        {
+            _isHidden = true;
+        }
+
+        public string GetText()
+        {
+            return _text;
+        }
+
+        public bool IsHidden()
+        {
+            return _isHidden;
+        }
     }
-    public string Text
-    {
-        get { return text; }
-    }
-    public bool IsHidden
-    {
-        get{ return isHidden; }
-        set { isHidden = value; }
-    }
-        
-   
-}

@@ -21,7 +21,7 @@ public class Reference
       this.chapter = chapter;
       this.verse = verse;
       this.endVerse = endVerse;
-      if (endVerse > 0);
+      //if (endVerse > 0);
    }
 
    public string Book{
